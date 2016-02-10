@@ -1,0 +1,45 @@
+source 'https://rubygems.org'
+ruby '2.3.0'
+gem 'rails', '>= 4.2.5.1'
+gem 'passenger'
+gem 'ngmin-rails'
+gem 'sass-rails', '4.0.1'
+gem 'uglifier', '2.1.1'
+gem 'yui-compressor'
+gem 'ejs'
+gem 'colorize'
+
+# gem 'pg'          * you probably want to use postgres over sqlite3
+# gem 'turbolinks'  * use only with round trip apps. single page apps dont need that.
+# gem 'aws-sdk'     * amazon access
+# gem 'clockwork'   * if you need to schedule tasks with less the 10 min intervals
+# gem 'dalli'       * memory cache
+# gem 'pundit'      * authorization system
+# gem 'bcrypt' * secure passwords
+
+group :development, :test do
+  gem 'sqlite3' # * you probably want to use postgres over sqlite3
+  gem 'rspec-rails'
+  gem 'guard-rspec'
+  gem 'spork'
+  gem 'guard-spork'
+  gem 'jasmine-rails'
+  gem 'guard-shell'
+  gem 'scss_lint'
+  gem 'guard-rubocop'
+  gem 'awesome_print'
+end
+
+group :test do
+  gem 'selenium-webdriver', '2.35.1'
+  gem 'capybara'
+  gem 'libnotify'
+  gem 'database_cleaner'
+  gem 'simplecov', require: false, group: :test
+end
+
+group :production do
+  gem 'rails_12factor', '0.0.2'
+  gem 'heroku-deflater'
+  gem 'newrelic_rpm'
+end
