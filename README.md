@@ -55,7 +55,7 @@ SQL SELECT statement is used to fetch the data from a database table which retur
   SELECT * FROM students ORDER BY id LIMIT 1
 ```
 
-######Where
+###### Where
 The SQL WHERE clause is used to specify a condition while fetching the data from single table or joining with multiple tables.
 
 ```Ruby
@@ -64,6 +64,17 @@ The SQL WHERE clause is used to specify a condition while fetching the data from
 
 ```SQL
   SELECT * FROM students WHERE age < 30
+```
+
+###### Composed Queries
+You can link AR relations
+
+```Ruby
+  Student.where('age < 30').select(:first_name, :last_name)
+```
+
+```SQL
+  SELECT first_name, last_name FROM students WHERE age < 30
 ```
 
 ####Resurces
