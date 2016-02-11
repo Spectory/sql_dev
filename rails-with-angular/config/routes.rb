@@ -1,4 +1,4 @@
-TddTemplate::Application.routes.draw do
+SqlDev::Application.routes.draw do
   root 'static_pages#home'
   get 'static_pages/home'
 

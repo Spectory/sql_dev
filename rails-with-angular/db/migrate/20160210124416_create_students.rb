@@ -4,7 +4,7 @@ class CreateStudents < ActiveRecord::Migration
       t.string :first_name
       t.string :last_name
       t.integer :age
-
+      t.belongs_to :house
       t.timestamps
     end
   end

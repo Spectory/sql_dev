@@ -66,6 +66,8 @@ The SQL WHERE clause is used to specify a condition while fetching the data from
   SELECT * FROM students WHERE age < 30
 ```
 
+###### Join
+
 ###### Composed Queries
 You can link AR relations
 
@@ -76,6 +78,13 @@ You can link AR relations
 ```SQL
   SELECT first_name, last_name FROM students WHERE age < 30
 ```
+
+Relations/Associations
+----------------------
+
+belongs_to
+has_many
+many_to_many
 
 ####Resurces
 

@@ -1,5 +1,5 @@
 module StudentHelper
-  AGE_RANGE = (20..90).to_a
+  AGE_RANGE = (10..18).to_a
 
   module AR
     module_function
@@ -29,13 +29,21 @@ module StudentHelper
 
     ########### WHERE ##########
     def young
-      Student.where('age < 30')
+      Student.where('age < 16')
     end
 
-    ########### Composed Querys ##########
+    ########### Associations Queries ##########
 
     def youngsters_names
-      Student.where('age < 30').select(:first_name, :last_name)
+      Student.where('age < 16').select(:first_name, :last_name)
+    end
+
+    def first_student_courses
+      Student.first.courses
+    end
+
+    def gryffindor_students
+      Student.where(house: House.find_by_name('gryffindor'))
     end
   end
 
@@ -74,13 +82,24 @@ module StudentHelper
 
     ########### WHERE ##########
     def young
-      sql = 'SELECT * FROM students WHERE age < 30'
+      sql = 'SELECT * FROM students WHERE age < 16'
       ActiveRecord::Base.connection.execute(sql)
     end
 
-    ########### Composed Querys ##########
+    ########### Associations Queries ##########
     def youngsters_names
-      sql = 'SELECT first_name, last_name FROM students WHERE age < 30'
+      sql = 'SELECT first_name, last_name FROM students WHERE age < 16'
+      ActiveRecord::Base.connection.execute(sql)
+    end
+
+    def first_student_courses
+      sql = 'SELECT * FROM courses INNER JOIN courses_students ON courses.id = courses_students.course_id WHERE courses_students.student_id = 1'
+      ActiveRecord::Base.connection.execute(sql)
+    end
+
+    def gryffindor_students
+      #todo find by name
+      sql = 'SELECT "students".* FROM "students" WHERE "students"."house_id" = 1'
       ActiveRecord::Base.connection.execute(sql)
     end
   end

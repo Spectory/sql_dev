@@ -9,4 +9,4 @@
 
 # Make sure your secret_key_base is kept private
 # if you're sharing your code publicly.
-TddTemplate::Application.config.secret_key_base = '5d66229acf1951da73432edcb259ec971ad1ae5d47af454a6958a481c55904229d579f4cfb7c4e416b98dded83b736c07a5d59215a74d75e43150ff0ae5e4922'
+SqlDev::Application.config.secret_key_base = '5d66229acf1951da73432edcb259ec971ad1ae5d47af454a6958a481c55904229d579f4cfb7c4e416b98dded83b736c07a5d59215a74d75e43150ff0ae5e4922'

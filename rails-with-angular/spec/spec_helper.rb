@@ -21,7 +21,7 @@ Spork.prefork do
   ENV['RAILS_ENV'] ||= 'test'
   require File.expand_path('../../config/environment', __FILE__)
   require 'rspec/rails'
-  TddTemplate::Application.load_tasks
+  SqlDev::Application.load_tasks
 
   # Requires supporting ruby files with custom matchers and macros, etc,
   # in spec/support/ and its subdirectories.
