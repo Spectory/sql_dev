@@ -10,11 +10,10 @@ courses = [
   'Potions',
   'Transfiguration'
 ]
+courses.each { |c| Course.create!(name: c) }
 
 houses = %w(gryffindor hufflepuff ravenclew slytherin)
 houses.each { |h| House.create(name: h) }
-
-courses.each { |c| Course.create!(name: c) }
 
 kids = [
   'Harry Potter',
@@ -87,7 +86,6 @@ kids = [
   'Malcolm Baddock',
   'Graham Pritchard'
 ]
-
 age_range = (10..18).to_a
 kids.each do |k|
   full_name = k.split
