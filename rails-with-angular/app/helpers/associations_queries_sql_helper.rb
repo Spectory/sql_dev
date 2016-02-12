@@ -7,12 +7,12 @@ module AssociationsQueriesSqlHelper
     ActiveRecord::Base.connection.execute(sql)
   end
 
-  def gryffindor_students_names
+  def students_of_house(house_name)
     sql = "
-      SELECT first_name, last_name
+      SELECT *
       FROM students, houses
       WHERE students .house_id = houses.id
-      AND houses .name = 'gryffindor'
+      AND houses .name = '#{house_name}'
     "
     ActiveRecord::Base.connection.execute(sql)
   end
