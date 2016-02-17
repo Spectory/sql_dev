@@ -65,27 +65,6 @@ The SQL WHERE clause is used to specify a condition while fetching the data from
   SELECT * FROM students WHERE age < 30
 ```
 
-##### Join
-An SQL JOIN clause is used to combine rows from two or more tables, based on a common field between them.
-
-The most common type of join is: SQL INNER JOIN (simple join). An SQL INNER JOIN returns all rows from multiple tables where the join condition is met.
-
-
-```SQL
-  SELECT students.*, houses.*
-  FROM students
-  INNER JOIN houses
-  ON students.house_id = houses.id
-```
-Note that we don't really need to pull each student & houses data into memory. we can specify which fields are required for our purpose.
-
-```SQL
-  SELECT students.id as student_id ,  houses.name as houses_name
-  FROM students
-  INNER JOIN houses
-  ON students.house_id = houses.id
-```
-
 ##### Composed Queries
 You can link AR relations
 
@@ -96,6 +75,55 @@ You can link AR relations
 ```SQL
   SELECT first_name, last_name FROM students WHERE age < 30
 ```
+
+##### Join
+An SQL JOIN clause is used to combine rows from two or more tables, based on a common field between them.
+
+The most common type of join is: SQL INNER JOIN (simple join). An SQL INNER JOIN returns all rows from multiple tables where the join condition is met.
+
+Students:
+
+| id | first_name | last_name | catch_phrase       | house_id |
+|----|------------|-----------|--------------------|----------|
+| 1  | johny      | bravo     | man I'm pretty     | 1        |
+| 2  | elmaer     | fudge     | be vewi vewi quiet | 2        |
+| 3  | ...        | ...       | ...                |          |
+|    |            |           |                    |          |
+
+Houses:
+
+| id | city | street   | number |
+|----|------|----------|--------|
+| 1  | NY   | broadway | 1      |
+| 2  | NY   | 5th      | 4      |
+| 3  | ...  | ...      | ...    |
+|    |      |          |        |
+
+
+```SQL
+  SELECT students.*, houses.*
+  FROM students
+  INNER JOIN houses
+  ON students.house_id = houses.id
+```
+Note that we don't really need to pull each student & houses data into memory. We can specify which fields are required for our purpose.
+
+```SQL
+  SELECT students.id as student_id , houses.number as houses_number
+  FROM students
+  INNER JOIN houses
+  ON students.house_id = houses.id
+```
+
+Result:
+
+| student_id | house_number |
+|------------|--------------|
+| 1          | 1            |
+| 2          | 4            |
+| 3          | ...          |
+|            |              |
+
 
 Relations/Associations
 ----------------------
@@ -150,5 +178,5 @@ best practices
 ```
 ####Recurses
 
-http://www.tutorialspoint.com/sql/index.html
-http://guides.rubyonrails.org/active_record_querying.html
+- http://www.tutorialspoint.com/sql/index.html
+- http://guides.rubyonrails.org/active_record_querying.html
