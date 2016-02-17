@@ -18,13 +18,13 @@ module StudentSqlHelper
   end
 
   ########### SELECT ##########
-  def first
-    sql = 'SELECT * FROM students ORDER BY id LIMIT 1'
+  def all
+    sql = 'SELECT * FROM students'
     ActiveRecord::Base.connection.execute(sql)
   end
 
-  def all
-    sql = 'SELECT * FROM students'
+  def first
+    sql = 'SELECT * FROM students ORDER BY id LIMIT 1'
     ActiveRecord::Base.connection.execute(sql)
   end
 

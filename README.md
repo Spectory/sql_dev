@@ -3,20 +3,20 @@
 Basic Consent & Terminologies
 -----------------------------
 
-###### What is RDBMS?
+##### What is RDBMS?
 RDBMS stands for **Relational Database Management System**.
 RDBMS is the basis for SQL, and for all modern database systems like MS SQL Server, Postgres, sqlite...
 
-###### What is SQL?
+##### What is SQL?
 SQL stands for **Structured Query Language**, which is a computer language for storing, manipulating and retrieving data stored in relational database.
 
-###### What is Table?
+##### What is Table?
 a table is the most common and simplest form of data storage in a relational database
 
-###### What is record/row?
+##### What is record/row?
 A record, also called a row of data, is each individual entry that exists in a table.
 
-###### What is column?
+##### What is column?
 A column is a vertical entity in a table that contains all information associated with a specific field in a table.
 
 | id | first_name | last_name | catch_phrase       |               |
@@ -26,14 +26,14 @@ A column is a vertical entity in a table that contains all information associate
 | 3  | ...        | ...       | ...                |               |
 |    |            |           | ^ column           |               |
 
-###### What is ORM?
+##### What is ORM?
 **Object-Relational Mapping**, commonly referred to as its abbreviation ORM, is a technique that connects the rich objects of an application to tables in a relational database management system. Using ORM, the properties and relationships of the objects in an application can be easily stored and retrieved from a database **without writing SQL statements directly** and with less overall database access code.
 For example, ActiveRecord (at rails apps) & Ecto (at PhoenixFramework).
 
 
 Queries
 -----------
-######Insert
+#####Insert
 The SQL INSERT INTO Statement is used to add new rows of data to a table in the database.
 
 ```Ruby
@@ -44,7 +44,7 @@ The SQL INSERT INTO Statement is used to add new rows of data to a table in the 
   INSERT INTO students (first_name, last_name, age) VALUES ('Johny', 'Bravo', 25)
 ```
 
-######Select
+#####Select
 SQL SELECT statement is used to fetch the data from a database table which returns data in the form of result table. These result tables are called result-sets.
 
 ```Ruby
@@ -55,7 +55,7 @@ SQL SELECT statement is used to fetch the data from a database table which retur
   SELECT * FROM students ORDER BY id LIMIT 1
 ```
 
-###### Where
+##### Where
 The SQL WHERE clause is used to specify a condition while fetching the data from single table or joining with multiple tables.
 
 ```Ruby
@@ -66,9 +66,30 @@ The SQL WHERE clause is used to specify a condition while fetching the data from
   SELECT * FROM students WHERE age < 30
 ```
 
-###### Join
+##### Join
+An SQL JOIN clause is used to combine rows from two or more tables, based on a common field between them.
 
-###### Composed Queries
+```Ruby
+  
+```
+
+```Sql
+    SELECT students.*
+    FROM students
+    INNER JOIN houses
+    ON students.house_id = houses.id
+```
+same as
+```Sql
+      SELECT students.*
+      FROM students, houses
+      WHERE  students.house_id = houses.id
+```
+
+######
+The most common type of join is: SQL INNER JOIN (simple join). An SQL INNER JOIN returns all rows from multiple tables where the join condition is met.
+
+##### Composed Queries
 You can link AR relations
 
 ```Ruby
@@ -88,4 +109,6 @@ many_to_many
 
 ####Resurces
 
-http://www.tutorialspoint.com/sql/index.htm
+http://www.tutorialspoint.com/sql/index.html
+http://guides.rubyonrails.org/active_record_querying.html
+

@@ -19,10 +19,32 @@ module AssociationsQueriesSqlHelper
 
   def students_with_houses
     sql = "
-      SELECT *
+      SELECT students.*
       FROM students, houses
       WHERE  students.house_id = houses.id
     "
     ActiveRecord::Base.connection.execute(sql)
+  end
+  def students_with_houses_2
+    sql = "
+      SELECT students.*
+      FROM students
+      INNER JOIN houses
+      ON students.house_id = houses.id
+    "
+    ActiveRecord::Base.connection.execute(sql)
+  end
+
+  def students_from_house_that_take_course(course_name, house_name)
+    sql = "
+      SELECT  students.*
+      FROM students
+      INNER JOIN courses_students
+      ON students.id = courses_students.student_id
+      WHERE courses_students.course_id = ?
+      AND students.house_id = 2
+      ORDER BY students.id
+      ASC
+    "
   end
 end
