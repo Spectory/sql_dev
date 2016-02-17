@@ -34,4 +34,11 @@ module StudentArHelper
   def students_under_16_full_name
     Student.where('age < 16').select(:first_name, :last_name)
   end
+
+  ########### JOIN ###########
+  def students_of_first_and_second_house
+    Student.joins('LEFT OUTER JOIN houses ON houses.id = students.id').where(house_id: [1,2])
+  end
+
+  
 end

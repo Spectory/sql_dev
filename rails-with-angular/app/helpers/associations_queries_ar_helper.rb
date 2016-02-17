@@ -63,4 +63,12 @@ module AssociationsQueriesArHelper
       AND students.house_id = #{houses[0]['id']}
       ")
   end
+
+  def students_names_and_courses
+    Student.all.map do |s|
+      res = []
+      s.courses.each {|c| res.push({first_name: s.first_name, last_name: s.last_name, course_name: c.name})}
+      res
+    end
+  end
 end

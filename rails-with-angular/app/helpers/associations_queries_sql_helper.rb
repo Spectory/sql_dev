@@ -47,4 +47,14 @@ module AssociationsQueriesSqlHelper
       ASC
     "
   end
+
+  def students_names_and_courses
+    sql = "
+    SELECT students.first_name as first_name, students.last_name as last_name, courses.name as course_name
+    FROM courses_students 
+    JOIN courses ON courses_students.course_id = courses.id
+    JOIN students  ON courses_students.student_id = students .id
+    "
+    ActiveRecord::Base.connection.execute(sql)
+  end
 end
