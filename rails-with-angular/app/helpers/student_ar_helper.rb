@@ -9,8 +9,15 @@ module StudentArHelper
     Student.create(first_name: "fname_#{i}", last_name: "lname_#{i}", age: AGE_RANGE.sample)
   end
 
-  def bulk_insert(n)
+  def bad_bulk_insert(n)
     (1..n).each { add }
+  end
+
+  def bulk_insert(n)
+    c = Student.count
+    ActiveRecord::Base.transaction do
+      (c + 1.. c + n).each { |i| Student.create(first_name: "fname_#{i}", last_name: "lname_#{i}", age: AGE_RANGE.sample) }
+    end
   end
 
   ########### SELECT ##########
