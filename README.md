@@ -11,7 +11,7 @@ RDBMS is the basis for SQL, and for all modern database systems like MS SQL Serv
 SQL stands for **Structured Query Language**, which is a computer language for storing, manipulating and retrieving data stored in relational database.
 
 ##### What is Table?
-a table is the most common and simplest form of data storage in a relational database
+A table is the most common and simplest form of data storage in a relational database.
 
 ##### What is record/row?
 A record, also called a row of data, is each individual entry that exists in a table.
@@ -30,23 +30,25 @@ A column is a vertical entity in a table that contains all information associate
 **Object-Relational Mapping**, commonly referred to as its abbreviation ORM, is a technique that connects the rich objects of an application to tables in a relational database management system. Using ORM, the properties and relationships of the objects in an application can be easily stored and retrieved from a database **without writing SQL statements directly** and with less overall database access code.
 For example, ActiveRecord (at rails apps) & Ecto (at PhoenixFramework).
 
-
+-----------------------------------------------------------------------------------------
 
 
 Queries
 -------
+Lets review some basic AR code, and its SQL interpretation.
+
 #####Insert
-The SQL INSERT INTO Statement is used to add new rows of data to a table in the database.
+The INSERT INTO Statement is used to add new rows of data to a table in the database.
 
 ```Ruby
-  Student.create(first_name: "Johny", last_name: "Bravo", age: 25
+  Student.create(first_name: "Johny", last_name: "Bravo", age: 25)
 ```
 ```SQL
   INSERT INTO students (first_name, last_name, age) VALUES ('Johny', 'Bravo', 25)
 ```
 
 #####Select
-SQL SELECT statement is used to fetch the data from a database table which returns data in the form of result table. These result tables are called result-sets.
+SELECT statement is used to fetch the data from a database table which returns data in the form of result table. These result tables are called result-sets.
 
 ```Ruby
   Student.first
@@ -56,7 +58,7 @@ SQL SELECT statement is used to fetch the data from a database table which retur
 ```
 
 ##### Where
-The SQL WHERE clause is used to specify a condition while fetching the data from single table or joining with multiple tables.
+The WHERE clause is used to specify a condition while fetching the data from single table or joining with multiple tables.
 
 ```Ruby
   Student.where('age < 30')
@@ -73,7 +75,7 @@ The SQL WHERE clause is used to specify a condition while fetching the data from
 ```
 
 ##### Composed Queries
-You can chain AR queries. AR will analyze the code, and convert it to a SQL queries.
+You can chain AR queries. AR will analyze the code, and convert it to one or more SQL queries.
 
 ```Ruby
   Student.where('age < 30').select(:first_name, :last_name)
@@ -86,7 +88,7 @@ You can chain AR queries. AR will analyze the code, and convert it to a SQL quer
 ##### Join
 An SQL JOIN clause is used to combine rows from two or more tables, based on a common field between them.
 
-The most common type of join is: SQL INNER JOIN (simple join). An SQL INNER JOIN returns all rows from multiple tables where the join condition is met.
+The most common type of join is INNER JOIN (simple join). An SQL INNER JOIN returns all rows from multiple tables where the join condition is met.
 
 Say we have 2 tables
 Students:
@@ -102,7 +104,7 @@ Houses:
 
 | id | city | street   | number |
 |----|------|----------|--------|
-| 1  | NY   | broadway | 1      |
+| 1  | NY   | Broadway | 1      |
 | 2  | NY   | 5th      | 4      |
 | 3  | ...  | ...      | ...    |
 |    |      |          |        |
@@ -133,29 +135,29 @@ Result:
 | 3          | ...          |
 |            |              |
 
+--------------------------------------------------------------------------------------------
+
+#### Relations
+![alt text](./erd.jpg)
 
 
+
+--------------------------------------------------------------------------------------------
 
 Best Practices
 --------------
 
-###### Use AR built in queries
+#### Use AR built in queries
+ActiveRecord has a lot of built-in functionality we can use.
 ```Ruby
   Course.ids
   Student.count
   House.exists?
 ```
 
-###### Use arrays at queries
-```Ruby
-  Student.where(id: [1, 5, 23])
-```
-```SQL
- SELECT students.* FROM students WHERE students.id IN (1, 5, 23)
-```
-
-###### Keep code conversions
+#### Keep code conversions
 AR will convert different queries to the same SQL. It's easier to follow when we use the same patterns everywhere.
+
 ```Ruby
   House.where(name: 'house_name').first # bad
   House.find_by_name('house_name') # bad
@@ -165,7 +167,21 @@ AR will convert different queries to the same SQL. It's easier to follow when we
   SELECT  houses. FROM houses WHERE houses.name = 'house_name' LIMIT 1
 ```
 
-###### Use find_or_create
+#### Minimize the number of DB connections
+Use arrays at queries.
+```Ruby
+  # bad
+  s1 = Student.find(1)
+  s2 = Student.find(5)
+  s3 = Student.find(23)
+  # good
+  Student.where(id: [1, 5, 23])
+```
+```SQL
+ SELECT students.* FROM students WHERE students.id IN (1, 5, 23)
+```
+
+Use find_or_create
 ```Ruby
   emails = %w(mama@email.com papa.email.com)
   # not so good
@@ -177,9 +193,10 @@ AR will convert different queries to the same SQL. It's easier to follow when we
   emails.each {|e| User.find_or_create_by(email: e)}
 ```
 
-###### Bulk actions
+#### Bulk actions
 Each time you insert data to a table there are a few things going on. Creating a connection to the DB is an expensive action. Not only that, chances are the DB is on a remote system somewhere, so we need to think about network overhead too.
 
+AR has some built-in bulk actions such as `update_all, destroy_all...`
 ```Ruby
   def add
     i = Student.count
@@ -208,7 +225,7 @@ Each time you insert data to a table there are a few things going on. Creating a
   end
 ```
 
-###### Avoid N+1 queries
+#### Avoid N+1 queries
 Lets consider this code, what is the time complexity?
 ```Ruby
   students = Student.where("first_name LIKE (?)", "%H%")
@@ -245,7 +262,7 @@ Lets see what happens when we use the *includes* method
     Student Load (0.5ms)  SELECT "students".* FROM "students" WHERE (first_name LIKE ('%H%'))
     House Load (0.2ms)  SELECT "houses".* FROM "houses" WHERE "houses"."id" IN (1, 3, 4, 2)
 ```
-This code will run only 2 queries to the db. AR loaded the needed Houses to memory too. running the `students.each` loop will not access the db.
+This code will send only 2 queries to the db. AR loaded the needed Houses to memory too. running the `students.each` loop will not access the db.
 
 You can also reduce time complexity by covering pure ruby logic down to db queries.
 For example say we want to get tuples of {student_first_name, student_last_name, course_name} for each student & his courses.

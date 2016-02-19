@@ -27,11 +27,6 @@ ActiveRecord::Schema.define(version: 20160211170027) do
   add_index "courses_students", ["course_id"], name: "index_courses_students_on_course_id"
   add_index "courses_students", ["student_id"], name: "index_courses_students_on_student_id"
 
-  create_table "grades", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "houses", force: :cascade do |t|
     t.string   "name"
     t.datetime "created_at", null: false

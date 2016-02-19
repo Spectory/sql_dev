@@ -2,7 +2,6 @@ source 'https://rubygems.org'
 ruby '2.3.0'
 gem 'rails', '>= 4.2.5.1'
 gem 'passenger'
-gem 'ngmin-rails'
 gem 'sass-rails', '4.0.1'
 gem 'uglifier', '2.1.1'
 gem 'yui-compressor'
@@ -28,6 +27,7 @@ group :development, :test do
   gem 'scss_lint'
   gem 'guard-rubocop'
   gem 'awesome_print'
+  gem 'rails-erd'
 end
 
 group :test do

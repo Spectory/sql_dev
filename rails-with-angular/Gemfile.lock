@@ -50,6 +50,7 @@ GEM
       xpath (~> 2.0)
     childprocess (0.5.9)
       ffi (~> 1.0, >= 1.0.11)
+    choice (0.2.0)
     coderay (1.1.0)
     colorize (0.7.7)
     database_cleaner (1.5.1)
@@ -115,8 +116,6 @@ GEM
     multi_json (1.11.2)
     nenv (0.2.0)
     newrelic_rpm (3.14.2.312)
-    ngmin-rails (0.4.0)
-      rails (>= 3.1)
     nokogiri (1.6.7.2)
       mini_portile2 (~> 2.0.0.rc2)
     notiffany (0.0.8)
@@ -153,6 +152,11 @@ GEM
       activesupport (>= 4.2.0.beta, < 5.0)
       nokogiri (~> 1.6.0)
       rails-deprecated_sanitizer (>= 1.0.1)
+    rails-erd (1.4.6)
+      activerecord (>= 3.2)
+      activesupport (>= 3.2)
+      choice (~> 0.2.0)
+      ruby-graphviz (~> 1.2)
     rails-html-sanitizer (1.0.3)
       loofah (~> 2.0)
     rails_12factor (0.0.2)
@@ -196,6 +200,7 @@ GEM
       powerpack (~> 0.1)
       rainbow (>= 1.99.1, < 3.0)
       ruby-progressbar (~> 1.7)
+    ruby-graphviz (1.2.2)
     ruby-progressbar (1.7.5)
     rubyzip (0.9.9)
     sass (3.4.21)
@@ -259,9 +264,9 @@ DEPENDENCIES
   jasmine-rails
   libnotify
   newrelic_rpm
-  ngmin-rails
   passenger
   rails (>= 4.2.5.1)
+  rails-erd
   rails_12factor (= 0.0.2)
   rspec-rails
   sass-rails (= 4.0.1)
