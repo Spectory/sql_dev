@@ -164,7 +164,7 @@ AR will convert different queries to the same SQL. It's easier to follow when we
   House.find_by(name: 'house_name') # good
 ```
 ```SQL
-  SELECT  houses. FROM houses WHERE houses.name = 'house_name' LIMIT 1
+  SELECT  houses.* FROM houses WHERE houses.name = 'house_name' LIMIT 1
 ```
 
 #### Minimize the number of DB connections
