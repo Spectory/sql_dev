@@ -1,4 +1,4 @@
-#Relational DB
+#Relational DB & ORM
 
 Basic Consent & Terminologies
 -----------------------------
@@ -32,6 +32,9 @@ For example, ActiveRecord (at rails apps) & Ecto (at PhoenixFramework).
 
 -----------------------------------------------------------------------------------------
 
+Migrations & Schema
+-------------------
+TBD
 
 Queries
 -------
@@ -137,12 +140,127 @@ Result:
 
 --------------------------------------------------------------------------------------------
 
-#### Relations
+Relations
+---------
+Relations between tables can be defined using secondary indexes.
+For example, at the AR migration below, `belongs_to :house` simply adds a house_id column at that student table.
+```Ruby
+class CreateStudents < ActiveRecord::Migration
+  def change
+    create_table :students do |t|
+      t.string :first_name
+      t.string :last_name
+      t.integer :age
+      t.belongs_to :house
+      t.timestamps
+    end
+  end
+end
+```
+
+We also want to be able to add this student-house functionality to the Student Model:
+
+```Ruby
+  class Student < ActiveRecord::Base
+    belongs_to :house
+
+    def my_house_name
+      house.name
+    end
+
+    def self.first_student_house_name
+      Student.first.house.name
+    end
+  end
+```
+
+Many-to-many relations require an intimidate tables. So if a Student has can take many courses & each course has many students, we need to create one. Note that at intimidate tables, id column is not mandatory.
+```Ruby
+  class CreateCoursesStudents < ActiveRecord::Migration
+    def change
+      create_table :courses_students do |t|
+        t.belongs_to :student, index: true
+        t.belongs_to :course, index: true
+      end
+    end
+  end
+```
+Now we can add functionality to our models:
+```Ruby
+  class Student < ActiveRecord::Base
+    belongs_to :house
+    has_and_belongs_to_many :courses
+
+    def first_course
+      courses.first
+    end
+  end
+  
+  class Course < ActiveRecord::Base
+    has_and_belongs_to_many :students
+    
+    def sort_students_by_id
+      students.sort
+    end
+  end
+```
+
 ![alt text](./erd.jpg)
 
 
 
 --------------------------------------------------------------------------------------------
+
+Sequences
+---------
+By default tables are created with an primary `id` integer column. the value of this this filed is determined by the table `sequence`.
+This is what makes sure ids are unique and not null, as primary keys requires.
+
+Some DB's allows us to create a costume sequence. Assuming we use Postgres, we want models Potion & Charms that share an unique magical_id, and use that as our primary key.
+
+First we'll define the migrations
+```Ruby
+  class CreateMagicalSequence < ActiveRecord::Migration
+    def change
+      execute "CREATE SEQUENCE magical_seq INCREMENT BY 1 START WITH 1000"
+    end
+  end
+
+  class CreatePotions < ActiveRecord::Migration
+    def change
+      execute "CREATE TABLE potions(magical_id INTEGER DEFAULT NEXTVAL('magical_seq'), name VARCHAR(32));"
+    end
+  end
+
+  class CreateCharms < ActiveRecord::Migration
+    def change
+      execute "CREATE TABLE charms(magical_id INTEGER DEFAULT NEXTVAL('magical_seq'), name VARCHAR(32));"
+    end
+  end
+```
+
+Then set AR models to use 'magical_id' as primary key.
+```Ruby
+  class Potion < ActiveRecord::Base
+    self.primary_key = 'magical_id'
+  end
+  class Charm < ActiveRecord::Base
+    self.primary_key = 'magical_id'
+  end
+```
+
+Now we can run something like
+```Ruby
+  Potion.create(name: 'p1').magical_id
+  # => 1000
+  Charm.create(name: 'c1').magical_id
+  # => 1001
+  Charm.create(name: 'c1').magical_id
+  # => 1002
+  Potion.create(name: 'p2').magical_id
+  # => 1003
+```
+------------------------------------------------------------------------------------------------------------------------
 
 Best Practices
 --------------

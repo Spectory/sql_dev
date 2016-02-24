@@ -8,7 +8,7 @@ gem 'yui-compressor'
 gem 'ejs'
 gem 'colorize'
 
-# gem 'pg'          * you probably want to use postgres over sqlite3
+gem 'pg'
 # gem 'turbolinks'  * use only with round trip apps. single page apps dont need that.
 # gem 'aws-sdk'     * amazon access
 # gem 'clockwork'   * if you need to schedule tasks with less the 10 min intervals
@@ -17,7 +17,6 @@ gem 'colorize'
 # gem 'bcrypt' * secure passwords
 
 group :development, :test do
-  gem 'sqlite3' # * you probably want to use postgres over sqlite3
   gem 'rspec-rails'
   gem 'guard-rspec'
   gem 'spork'

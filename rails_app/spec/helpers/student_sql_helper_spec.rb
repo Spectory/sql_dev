@@ -31,7 +31,7 @@ describe 'StudentSqlHelper' do
     it 'should return first student' do
       expected_res = Student.create(first_name: 'fname', last_name: 'lname', age: 11)
       Student.create(first_name: 'fname2', last_name: 'lname2', age: 12)
-      expect(StudentSqlHelper.first[0]['id']).to eq(expected_res.id)
+      expect(StudentSqlHelper.first[0]['id']).to eq(expected_res.id.to_s)
     end
   end
 
@@ -59,7 +59,7 @@ describe 'StudentSqlHelper' do
       Student.create(first_name: 'fname2', last_name: 'lname2', age: 12)
       Student.create(first_name: 'fname3', last_name: 'lname3', age: 17)
       res = StudentSqlHelper.students_under_16_full_name
-      expect(res.size).to be(2)
+      expect(res.count).to be(2)
       expect(res.first['id']).to be nil
       expect(res.first['first_name']).not_to be nil
       expect(res.first['last_name']).not_to be nil
