@@ -243,7 +243,7 @@ Now we can add functionality to our models:
 
 Sequences
 ---------
-By default tables are created with an primary `id` integer column. the value of this this filed is determined by the table `sequence`.
+By default tables are created with an primary `id` integer column. The value of this this filed is determined by the table `sequence`.
 This is what makes sure ids are unique and not null, as primary keys requires.
 
 Some DB's allows us to create a costume sequence. Assuming we use Postgres, we want models Potion & Charms that share an unique magical_id, and use that as our primary key.
@@ -334,8 +334,8 @@ Use find_or_create
   emails = %w(mama@email.com papa.email.com)
   # not so good
   emails.each do |e| 
-    u = Users.find_by_email(e)
-    unless u Users.create(email: e)
+    u = User.find_by_email(e)
+    unless u User.create(email: e)
   end
   # better
   emails.each {|e| User.find_or_create_by(email: e)}
@@ -380,7 +380,7 @@ Lets consider this code, what is the time complexity?
   students.each {|s| s.house}
 ```
 
-Lets look at the console logs:
+Now look at the console logs:
 ```Ruby
   2.3.0 :004 > students = Student.where("first_name LIKE (?)", "%H%")
     Student Load (0.5ms)  SELECT "students".* FROM "students" WHERE (first_name LIKE ('%H%'))
@@ -400,7 +400,7 @@ Lets look at the console logs:
     House Load (0.0ms)  SELECT  "houses".* FROM "houses" WHERE "houses"."id" = ? LIMIT 1  [["id", 3]]
 ```
 
-Smells Bad aha? 
+Smells Bad aha?
 
 **Eager loading** is AR mechanism for loading the associated records of the objects returned by Model.find using as few queries as possible.
 
@@ -410,7 +410,7 @@ Lets see what happens when we use the *includes* method
     Student Load (0.5ms)  SELECT "students".* FROM "students" WHERE (first_name LIKE ('%H%'))
     House Load (0.2ms)  SELECT "houses".* FROM "houses" WHERE "houses"."id" IN (1, 3, 4, 2)
 ```
-This code will send only 2 queries to the db. AR loaded the needed Houses to memory too. running the `students.each` loop will not access the db.
+This code will send only 2 queries to the db. AR loaded the needed Houses to memory too. Running the `students.each` loop will not access the db.
 
 You can also reduce time complexity by covering pure ruby logic down to db queries.
 For example say we want to get tuples of {student_first_name, student_last_name, course_name} for each student & his courses.
@@ -436,8 +436,6 @@ We can do that by a single SQL query
   JOIN students  ON courses_students.student_id = students .id
 ```
 
-
-
 ###### Minimize memory usage
 Every time we make a query, we get back an ActiveRecord::Relation object. Sometimes those objects can be pretty big. Use `select` to make then thin, or even better, use pluck!
 
@@ -460,7 +458,7 @@ Say we wanna do some calculations on our students ages
  do_some_calcs_on(ages)
 ```
 
-Say we want to get our 3 oldest students.
+You can also use `limit` to get the same effect. Say we want to get our 3 oldest students.
 ```Ruby
   # bad - doing the calculations in memory
   students = Student.all.sort_by{|s| s.age}.take 3
