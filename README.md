@@ -30,11 +30,42 @@ A column is a vertical entity in a table that contains all information associate
 **Object-Relational Mapping**, commonly referred to as its abbreviation ORM, is a technique that connects the rich objects of an application to tables in a relational database management system. Using ORM, the properties and relationships of the objects in an application can be easily stored and retrieved from a database **without writing SQL statements directly** and with less overall database access code.
 For example, ActiveRecord (at rails apps) & Ecto (at PhoenixFramework).
 
------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------
 
 Migrations & Schema
 -------------------
-TBD
+Migrations are a convenient way to alter your database over time in a consistent and easy way. They use Ruby code so that you don't have to edit tables by SQL.
+
+Migrations, mighty as they may be, are not the authoritative source for your database schema. That role is in the hands of db/schema.rb, which shows the db current state.
+
+For example, the migration
+```Ruby
+class CreateStudents < ActiveRecord::Migration
+  def change
+    create_table :students do |t|
+      t.string :first_name
+      t.string :last_name
+      t.integer :age
+      t.belongs_to :house
+      t.timestamps
+    end
+  end
+end
+```
+
+will be translated to schema.rb as
+```Ruby
+  create_table "students", force: :cascade do |t|
+    t.string   "first_name"
+    t.string   "last_name"
+    t.integer  "age"
+    t.integer  "house_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+```
+
+------------------------------------------------------------------------------------------------------------------------
 
 Queries
 -------
@@ -206,7 +237,6 @@ Now we can add functionality to our models:
 ```
 
 ![alt text](./erd.jpg)
-
 
 
 --------------------------------------------------------------------------------------------
