@@ -205,7 +205,7 @@ We also want to be able to add this student-house functionality to the Student M
   end
 ```
 
-Many-to-many relations require an intimidate tables. So if a Student has can take many courses & each course has many students, we need to create one. Note that at intimidate tables, id column is not mandatory.
+Many-to-many relations require an intimidate tables. So if a Student can take many courses & each course has many students - we need to such table one. Note that at intimidate tables, id column is not mandatory.
 ```Ruby
   class CreateCoursesStudents < ActiveRecord::Migration
     def change
@@ -458,6 +458,16 @@ Say we wanna do some calculations on our students ages
  # better - don't keep the object at memory at all!
  ages = Student.pluck(:age)
  do_some_calcs_on(ages)
+```
+
+Say we want to get our 3 oldest students.
+```Ruby
+  # bad - doing the calculations in memory
+  students = Student.all.sort_by{|s| s.age}.take 3
+  # => SELECT "students".* FROM "students" ...
+  # better - let the DB do the work
+  Student.where('age > 17').order(:age).limit 3
+  # => SELECT  "students".* FROM "students" WHERE (age > 17)  ORDER BY "students"."age" ASC LIMIT 3 ...
 ```
 
 ------------------------------------------------------------------------------------------------------------------------
