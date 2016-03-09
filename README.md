@@ -1,3 +1,8 @@
+Title:  RDBMS & ActiveRecored Dev Meeting  
+Author: Guy Yogev  
+Date:   March 9, 2016  
+                                             
+
 #Relational DB & ORM
 
 Basic Consent & Terminologies
@@ -205,7 +210,7 @@ We also want to be able to add this student-house functionality to the Student M
   end
 ```
 
-Many-to-many relations require an intimidate tables. So if a Student can take many courses & each course has many students - we need to such table one. Note that at intimidate tables, id column is not mandatory.
+Many-to-many relations require an intimidate tables. So if a Student can take many courses & each course has many students - we need to create such table. Note that at intimidate tables, id column is not mandatory.
 ```Ruby
   class CreateCoursesStudents < ActiveRecord::Migration
     def change
@@ -440,7 +445,7 @@ We can do that by a single SQL query
 Every time we make a query, we get back an ActiveRecord::Relation object. Sometimes those objects can be pretty big. Use `select` to make then thin, or even better, use pluck!
 
 Say we wanna do some calculations on our students ages
-```
+```Ruby
  # bad - keeping unnecessary data in memory
  ages = []
  students = Student.all
