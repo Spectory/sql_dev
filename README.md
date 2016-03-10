@@ -475,7 +475,7 @@ You can also use `limit` to get the same effect. Say we want to get our 3 oldest
 
 ------------------------------------------------------------------------------------------------------------------------
 
-####Recurses
+####Resources
 
 - http://www.tutorialspoint.com/sql/index.html
 - http://guides.rubyonrails.org/active_record_querying.html
